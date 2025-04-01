@@ -18,9 +18,10 @@ async function runTests() {
     await testServer(url, { method: 'DELETE' }, 'Basic DELETE request');
     await testServer(url + 'nonexistent', { method: 'GET' }, 'Request to a nonexistent route');
     await testServer(url, { method: 'GET', headers: { 'Invalid-Header': '\u0000' } }, 'Request with invalid headers');
-    await testServer(url, { method: 'POST', body: 'A'.repeat(10 ** 6), headers: { 'Content-Type': 'text/plain' } }, 'POST large payload');
+    await testServer(url + 'login', { method: 'POST', body: 'wrong body', headers: { 'Content-Type': 'text/plain' } }, 'malformed body');
     await testServer(url, { method: 'PATCH' }, 'Unsupported HTTP method');
     await testServer(url + 'POL'.repeat(10 ** 7), { method: 'GET' }, 'URI too large');
+	await testServer(url + 'user', { method: 'GET' }, 'user not connected');
     await testServer('http://localhost:1234/', { method: 'GET' }, 'Request to an invalid port');
 }
 
